@@ -39,7 +39,8 @@ public class Eliza {
 
 
     public static void main(String[] args) {
-         Scanner keyboardIO = new Scanner(System.in);
+         Scanner keyboard = new Scanner(System.in);
+         boolean usingLatin = false;
 
         /*
          * initialize replaceMap
@@ -50,42 +51,6 @@ public class Eliza {
         ReplaceMap.put("my", "your");
         ReplaceMap.put("am", "are");
 
-        String msg = "What would you like to do?";
-        logMessage(msg, true, true);
-
-        msg = keyboardIO.nextLine();
-        logMessage(msg, true, false);
-        if (msg.equalsIgnoreCase("pig"))
-            pigLatin(keyboardIO);
-        else
-            playGame(keyboardIO);
-
-        printMessage();
-    }
-
-    /*
-     * If you type "pig" Eliza should begin speaking in pig latin
-     * Pig Latin Rules:
-     * If the first letter is a consonant, add "ay" to the end
-     * If the first letter is a vowel, add "way" or "tay" to the end
-     * Don't worry about the "multiple-letters-that-sounds-like one" rule
-     * (eg. str-, ch-, th-, etc.)
-     */
-
-    public static void pigLatin(Scanner keyboard) {
-        System.out.println("PigLatin");
-
-
-
-    }
-
-    public static void pigLatin() {
-        System.out.println("PigLatin without parm");
-
-
-
-    }
-    public static void playGame(Scanner keyboard) {
         Random random = new Random();
         String msg = "", reply = "", tmp = "";
 
@@ -100,8 +65,10 @@ public class Eliza {
             msg = keyboard.nextLine();
             logMessage(msg, false, false);
 
-            if (msg.contains("pig")) {
+            if ((msg.contains("pig")) && (!usingLatin) {
+
                 pigLatin();
+                usingLatin = !usingLatin;
             }
             else {
 
@@ -127,6 +94,31 @@ public class Eliza {
         }
 
         logMessage("Good bye.", true, true);
+
+        printMessage();
+    }
+
+    /*
+     * If you type "pig" Eliza should begin speaking in pig latin
+     * Pig Latin Rules:
+     * If the first letter is a consonant, add "ay" to the end
+     * If the first letter is a vowel, add "way" or "tay" to the end
+     * Don't worry about the "multiple-letters-that-sounds-like one" rule
+     * (eg. str-, ch-, th-, etc.)
+     */
+
+    public static void pigLatin(Scanner keyboard) {
+        System.out.println("PigLatin");
+
+
+
+    }
+
+    public static void pigLatin() {
+        System.out.println("PigLatin without parm");
+
+
+
     }
 
     public static void logMessage(String varMsg, boolean varPrint, boolean varSystem) {
