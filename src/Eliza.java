@@ -18,6 +18,7 @@
  */
 
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.Scanner;
@@ -31,12 +32,14 @@ public class Eliza {
     private static String[] QualifiersArray = {"Why do you say that",
                                                "You seem to think that",
                                                "So, you are concerned that"};
+    private static String[] Vowels = {"a", "e", "i", "o", "u"};
+
+    private static ArrayList<String> Messages = new ArrayList<String>();
+
 
 
     public static void main(String[] args) {
-        Random random = new Random();
-
-        Scanner keyboard = new Scanner(System.in);
+         Scanner keyboardIO = new Scanner(System.in);
 
         /*
          * initialize replaceMap
@@ -47,37 +50,100 @@ public class Eliza {
         ReplaceMap.put("my", "your");
         ReplaceMap.put("am", "are");
 
-        String msg = "", reply = "";
+        String msg = "What would you like to do?";
+        logMessage(msg, true, true);
 
-        System.out.println("Good day. What is your problem?");
+        msg = keyboardIO.nextLine();
+        logMessage(msg, true, false);
+        if (msg.equalsIgnoreCase("pig"))
+            pigLatin(keyboardIO);
+        else
+            playGame(keyboardIO);
+
+        printMessage();
+    }
+
+    /*
+     * If you type "pig" Eliza should begin speaking in pig latin
+     * Pig Latin Rules:
+     * If the first letter is a consonant, add "ay" to the end
+     * If the first letter is a vowel, add "way" or "tay" to the end
+     * Don't worry about the "multiple-letters-that-sounds-like one" rule
+     * (eg. str-, ch-, th-, etc.)
+     */
+
+    public static void pigLatin(Scanner keyboard) {
+        System.out.println("PigLatin");
+
+
+
+    }
+
+    public static void pigLatin() {
+        System.out.println("PigLatin without parm");
+
+
+
+    }
+    public static void playGame(Scanner keyboard) {
+        Random random = new Random();
+        String msg = "", reply = "", tmp = "";
+
+        logMessage("Good day. What is your problem?", true, true);
+
         boolean flag = true;
         int idx;
 
         while (flag) {
-            System.out.println("Enter your response here or Q to quit:");
-            msg = keyboard.nextLine();
+            logMessage("Enter your response here or Q to quit:", true, true);
 
-            if ((msg.equalsIgnoreCase("I am feeling great")) ||
-                (msg.equalsIgnoreCase("Q"))) {
-                flag = false;
+            msg = keyboard.nextLine();
+            logMessage(msg, false, false);
+
+            if (msg.contains("pig")) {
+                pigLatin();
             }
             else {
-                if (random.nextBoolean()) {
-                    // use QualifiersArray
-                    idx = random.nextInt(QualifiersArray.length);
-                    reply = convert2Reply(msg);
-                    System.out.println(QualifiersArray[idx] + " " + reply);
-                }
-                else {
-                    // use HedgesArray
-                    idx = random.nextInt (HedgesArray.length);
-                    System.out.println(HedgesArray[idx]);
+
+                if ((msg.equalsIgnoreCase("I am feeling great")) ||
+                        (msg.equalsIgnoreCase("Q"))) {
+                    flag = false;
+                } else {
+                    if (random.nextBoolean()) {
+                        // use QualifiersArray
+                        idx = random.nextInt(QualifiersArray.length);
+                        reply = convert2Reply(msg);
+                        tmp = QualifiersArray[idx] + " " + reply;
+                    } else {
+                        // use HedgesArray
+                        idx = random.nextInt(HedgesArray.length);
+                        tmp = HedgesArray[idx];
+                    }
+
+                    logMessage(tmp, true, true);
                 }
             }
 
         }
 
-        System.out.println("Good bye.");
+        logMessage("Good bye.", true, true);
+    }
+
+    public static void logMessage(String varMsg, boolean varPrint, boolean varSystem) {
+
+        if (varPrint)
+            System.out.println(varMsg);
+
+        if (varSystem)
+            Messages.add("System:\t" + varMsg);
+        else
+            Messages.add("User:\t" + varMsg);
+    }
+
+    public static void printMessage() {
+        System.out.println("\n***** Log:");
+        for (String item : Messages)
+            System.out.println(item);
     }
 
     public static String convert2Reply(String userMsg) {
