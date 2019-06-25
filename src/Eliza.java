@@ -65,13 +65,18 @@ public class Eliza {
             msg = keyboard.nextLine();
             logMessage(msg, false, false);
 
-            if ((msg.contains("pig")) && (!usingLatin) {
+            if (msg.equalsIgnoreCase("Q"))
+                break;
 
-                pigLatin();
+            if (msg.contains("pig")) {
                 usingLatin = !usingLatin;
             }
+            else if (usingLatin) {
+                // convert msg into pig latin
+                pigLatin(msg);
+            }
             else {
-
+                // it is NOT using latin
                 if ((msg.equalsIgnoreCase("I am feeling great")) ||
                         (msg.equalsIgnoreCase("Q"))) {
                     flag = false;
@@ -107,18 +112,26 @@ public class Eliza {
      * (eg. str-, ch-, th-, etc.)
      */
 
-    public static void pigLatin(Scanner keyboard) {
-        System.out.println("PigLatin");
+    public static void pigLatin(String varMsg) {
+        String tmpMsg = "";
 
+        for (String aword : varMsg.split(" ")) {
+            switch (aword.charAt(0)) {
+                case 'a':
+                case 'e':
+                case 'i':
+                case 'o':
+                case 'u':
+                    tmpMsg = tmpMsg + aword +  "way ";
+                    break;
 
+                default: // consonants, add 'ay' to the word
+                    tmpMsg = tmpMsg + aword +  "ay ";
+                    break;
+            }
+        }
 
-    }
-
-    public static void pigLatin() {
-        System.out.println("PigLatin without parm");
-
-
-
+        logMessage(tmpMsg, false, true);
     }
 
     public static void logMessage(String varMsg, boolean varPrint, boolean varSystem) {
